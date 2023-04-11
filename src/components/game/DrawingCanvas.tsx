@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState, MouseEvent } from "react";
+import { useSelector } from "react-redux";
+import { selectVoteKey } from "./../../store";
 import { io, Socket } from "socket.io-client";
 import WordInformation from "./TopBar/WordInformation";
 import Timer from "./TopBar/Timer";
+import GameWordAccessor from "./../helper/GameWordAccessor";
+import "./../../App.css";
 
 const DrawingCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -11,14 +15,14 @@ const DrawingCanvas: React.FC = () => {
   const [timeUp, setTimeUp] = useState(false);
 
   const isDrawing = localStorage.getItem("isDrawing") === "true";
-  const word = "Bus Factor"; // Replace this with the actual word from the game state
-
+  const voteKey = useSelector(selectVoteKey);
+  const word = GameWordAccessor.getGameWordNameByKey(voteKey) ?? "";
   const handleTimeUp = () => {
     setTimeUp(true);
   };
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3001"); // Replace with your server URL
+    const newSocket = io("http://localhost:3001");
     setSocket(newSocket);
 
     return () => {
@@ -94,14 +98,21 @@ const DrawingCanvas: React.FC = () => {
 
     const handleMouseMove = (event: MouseEvent) => {
       if (!drawing) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
       context.strokeStyle = color;
-      context.lineTo(event.clientX, event.clientY);
+      context.lineTo(x, y);
       context.stroke();
 
       if (socket) {
         socket.emit("draw", {
-          x: event.clientX,
-          y: event.clientY,
+          x,
+          y,
           color,
           drawing: false,
         });
@@ -119,10 +130,8 @@ const DrawingCanvas: React.FC = () => {
 
     return () => {
       //@ts-ignore
-
       canvas.removeEventListener("mousedown", handleMouseDown);
       //@ts-ignore
-
       canvas.removeEventListener("mousemove", handleMouseMove);
       canvas.removeEventListener("mouseup", handleMouseUp);
     };
@@ -142,6 +151,8 @@ const DrawingCanvas: React.FC = () => {
     }
   };
 
+  const colors = ["#000000", "#FF0000", "#FFFF00", "#00FF00", "#0000FF"];
+
   return (
     <div>
       <div className="word-information">
@@ -154,12 +165,21 @@ const DrawingCanvas: React.FC = () => {
           />
         )}
       </div>
-      <input
-        type="color"
-        value={color}
-        onChange={(e) => setColor(e.target.value)}
-        style={{ marginRight: "10px" }}
-      />
+      <div className="color-picker">
+        {colors.map((c) => (
+          <div
+            key={c}
+            className="color-box"
+            style={{ backgroundColor: c }}
+            onClick={() => setColor(c)}
+          />
+        ))}
+        <div
+          className="color-box"
+          style={{ backgroundColor: "#FFFFFF", border: "1px solid black" }}
+          onClick={() => setColor("#FFFFFF")}
+        />
+      </div>
       <button onClick={clearCanvas}>Clear</button>
       <canvas
         ref={canvasRef}

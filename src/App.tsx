@@ -21,15 +21,14 @@ import { RootState } from "./store";
 import Lobby from "./components/game/Lobby";
 import Game from "./components/game/Game";
 import Vote from "./components/Vote/Vote";
+import DisplayVotes from "./components/Vote/DisplayVotes";
 
 function App() {
-  const gamePhase = useSelector((state: RootState) => state.game.gamePhase);
 
   return (
     <div>
-      {gamePhase === "lobby" && <Lobby />}
-      {gamePhase === "game" && <Game />}
-      {gamePhase === "vote" && <Vote />}
+      <Game />
+      
     </div>
   );
 }

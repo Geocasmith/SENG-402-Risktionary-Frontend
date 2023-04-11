@@ -1,53 +1,60 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectVoteName } from "./../../store";
-import * as h337 from 'heatmap.js';
+import React, { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import socket from "./../../socket";
 
-const DisplayVotes: React.FC = () => {
-  const voteName = useSelector(selectVoteName);
+// const socket = io('http://localhost:3001');
 
-  React.useEffect(() => {
-    const heatmaps = document.querySelectorAll('.heatmap-container');
-    heatmaps.forEach((heatmap) => {
-      const heatmapInstance = h337.create({
-        container: heatmap as HTMLElement,
-        radius: 50,
-        maxOpacity: 0.5,
-        minOpacity: 0,
-        blur: 0.75,
-      });
+interface Vote {
+  risk: number;
+  probability: number;
+  drawing: number;
+}
 
-      // Example data points
-      const data = {
-        max: 100,
-        min: 0,
-        data: [
-          { x: 10, y: 5, value: 100 },
-          { x: 30, y: 5, value: 80 },
-          { x: 50, y: 5, value: 60 },
-          { x: 70, y: 5, value: 40 },
-          { x: 90, y: 5, value: 20 },
-        ],
-      };
-      heatmapInstance.setData(data);
-    });
-  }, []);
+interface DisplayVotesProps {
+  votes: Vote[];
+}
+
+const DisplayVotes: React.FC<DisplayVotesProps> = ({ votes }) => {
+  // const [votes, setVotes] = useState<Vote[]>([]);
+
+  const handleNextButtonClick = () => {
+    // Emit the "start game" event
+    console.log("Start game button clicked");
+    socket.emit("slidebutton");
+  };
+
+  // useEffect(() => {
+  //   socket.on('displayVotes', (votes: Vote[]) => {
+  //     setVotes(votes);
+  //   });
+
+  //   return () => {
+  //     socket.off('displayVotes');
+  //   };
+  // }, []);
 
   return (
-    <div className="flex flex-col items-center space-y-10">
-      <h1 className="text-4xl font-bold">{voteName}</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
 
-      <div className="flex items-center space-x-4">
-        <p>Low Risk</p>
-        <div className="relative w-64 h-10 heatmap-container"></div>
-        <p>High Risk</p>
+    <div className="container mx-auto px-4">
+      <h2 className="text-4xl font-bold my-4 text-center">Votes</h2>
+      <div>
+        {votes.map((vote, index) => (
+          <div key={index}>
+            <p>Risk: {vote.risk}</p>
+            <p>Probability: {vote.probability}</p>
+            <p>Drawing: {vote.drawing}</p>
+            <hr />
+          </div>
+        ))}
       </div>
-
-      <div className="flex items-center space-x-4">
-        <p>Low Probability</p>
-        <div className="relative w-64 h-10 heatmap-container"></div>
-        <p>High Probability</p>
-      </div>
+      <button
+        onClick={handleNextButtonClick}
+        className="mt-8 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Next
+      </button>
+    </div>
     </div>
   );
 };

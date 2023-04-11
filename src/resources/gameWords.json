@@ -1,0 +1,18 @@
+{
+    "1": {
+      "word": "Bus Factor",
+      "description": "The bus factor is a risk when only one developer has certain knowledge or access and they get “hit by a bus” and suddenly drop out of the project. A consequence of this risk is the rest of the team having to relearn their knowledge if other team mates had not learned their certain knowledge. If the member had special access such as a password that was not shared the team may loose that access.",
+      "path": "./bus.png"
+    },
+    "2": {
+      "word": "Swine Flu",
+      "description": "Swine flu can make the programmers sick.",
+      "path": "./swine.png"
+    },
+    "3": {
+      "word": "Fire",
+      "description": "A fire can burn down the building and damage infrastructure.",
+      "path": "./fire.png"
+    }
+  }
+  

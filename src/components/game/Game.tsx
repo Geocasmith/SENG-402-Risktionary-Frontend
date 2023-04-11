@@ -1,61 +1,73 @@
-// // src/App.tsx
-// import React from "react";
-// // import "./App.css";
-// import DrawingCanvas from "./DrawingCanvas";
-// import ChatBox from "./Chatbox";
-
-// function Game() {
-//   return (
-//     <div style={{ display: "flex" }}>
-//       <DrawingCanvas />
-//       <ChatBox />
-//     </div>
-//   );
-// }
-
-// export default Game;
-// src/components/game/Game.tsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { io } from "socket.io-client";
+import socket from "./../../socket";
 import Lobby from "./Lobby";
-import DrawingCanvas from "./DrawingCanvas";
-import ChatBox from "./Chatbox";
 import Vote from "../Vote/Vote";
-import { selectGamePhase, setGamePhase } from './../../reducers/gameSlice';
-
-const socket = io("http://localhost:3001");
+import DisplayVotes from "./../Vote/DisplayVotes";
+import { selectGamePhase, setGamePhase } from "./../../reducers/gameSlice";
+import Container from "./Container";
+import Slides from "./Slides";
+import { incrementKey } from "./../../store";
+import GameBorder from "../GameBorder";
 
 const Game: React.FC = () => {
   const gamePhase = useSelector(selectGamePhase);
   const dispatch = useDispatch();
+  const [receivedVotes, setReceivedVotes] = useState<any[]>([]);
 
   useEffect(() => {
-    socket.on("started", () => {
+    const handleStarted = () => {
       dispatch(setGamePhase("game"));
-    });
+    };
 
-    socket.on("end", () => {
+    const handleVote = () => {
+      console.log("Received vote event");
       dispatch(setGamePhase("vote"));
-    });
+    };
+
+    const handleHeatmap = (votes: any[]) => {
+      console.log("Received displayvotes event");
+      setReceivedVotes(votes);
+      dispatch(setGamePhase("displayVotes"));
+    };
+
+    const handleSlides = () => {
+      console.log("Received slides event");
+      dispatch(setGamePhase("slides"));
+    };
+
+    const handleRestart = () => {
+      console.log("Received restart event");
+      dispatch(incrementKey());
+      setReceivedVotes([]); // <-- Clear receivedVotes on restart
+      dispatch(setGamePhase("lobby"));
+    };
+
+    socket.on("started", handleStarted);
+    socket.on("vote", handleVote);
+    socket.on("heatmap", handleHeatmap);
+    socket.on("slides", handleSlides);
+    socket.on("restart", handleRestart);
 
     // Cleanup on unmount
     return () => {
-      socket.off("started");
-      socket.off("end");
+      socket.off("started", handleStarted);
+      socket.off("vote", handleVote);
+      socket.off("heatmap", handleHeatmap);
+      socket.off("slides", handleSlides);
+      socket.off("restart", handleRestart);
     };
-  }, [dispatch]);
+  }, []); // <-- Remove dispatch from the dependency array
 
   return (
     <div>
-      {gamePhase === "lobby" && <Lobby />}
-      {gamePhase === "game" && (
-        <div style={{ display: "flex" }}>
-          <DrawingCanvas />
-          <ChatBox />
-        </div>
-      )}
-      {gamePhase === "vote" && <Vote />}
+      <GameBorder>
+        {gamePhase === "lobby" && <Lobby />}
+        {gamePhase === "game" && <Container />}
+        {gamePhase === "vote" && <Vote />}
+        {gamePhase === "displayVotes" && <DisplayVotes votes={receivedVotes} />}
+        {gamePhase === "slides" && <Slides />}
+      </GameBorder>
     </div>
   );
 };
