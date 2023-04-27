@@ -1,23 +1,37 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 interface SignUpData {
-  email: string;
-  password: string;
+  studentId: string;
   displayName: string;
 }
 
 const SignUp: React.FC = () => {
   const [signUpData, setSignUpData] = useState<SignUpData>({
-    email: "",
-    password: "",
+    studentId: "",
     displayName: "",
   });
+  
+  const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // API call would go here
-    console.log("Data that would be sent to the API:", signUpData);
+    const response = await fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(signUpData),
+    });
+
+    // if (response.ok) {
+    //   sessionStorage.setItem("signedIn", "true");
+    // }
+    sessionStorage.setItem("signedIn", "true");
+    localStorage.setItem("displayName", signUpData.displayName);
+    navigate("/");
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +49,21 @@ const SignUp: React.FC = () => {
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
+              <label htmlFor="student-id" className="sr-only">
+                Student ID
+              </label>
+              <input
+                id="student-id"
+                name="studentId"
+                type="text"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Student ID"
+                value={signUpData.studentId}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
               <label htmlFor="display-name" className="sr-only">
                 Display Name
               </label>
@@ -43,41 +72,9 @@ const SignUp: React.FC = () => {
                 name="displayName"
                 type="text"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Display Name"
                 value={signUpData.displayName}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={signUpData.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={signUpData.password}
                 onChange={handleChange}
               />
             </div>

@@ -9,13 +9,19 @@ import Container from "./Container";
 import Slides from "./Slides";
 import { incrementKey } from "./../../store";
 import GameBorder from "../GameBorder";
+import { useNavigate } from "react-router-dom";
 
 const Game: React.FC = () => {
   const gamePhase = useSelector(selectGamePhase);
   const dispatch = useDispatch();
   const [receivedVotes, setReceivedVotes] = useState<any[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!sessionStorage.getItem("signedIn")) {
+      navigate("/signup");
+    }
+
     const handleStarted = () => {
       dispatch(setGamePhase("game"));
     };
@@ -57,7 +63,7 @@ const Game: React.FC = () => {
       socket.off("slides", handleSlides);
       socket.off("restart", handleRestart);
     };
-  }, []); // <-- Remove dispatch from the dependency array
+  }, [dispatch, navigate]);
 
   return (
     <div>
@@ -65,7 +71,9 @@ const Game: React.FC = () => {
         {gamePhase === "lobby" && <Lobby />}
         {gamePhase === "game" && <Container />}
         {gamePhase === "vote" && <Vote />}
-        {gamePhase === "displayVotes" && <DisplayVotes votes={receivedVotes} />}
+        {gamePhase === "displayVotes" && (
+          <DisplayVotes votes={receivedVotes} />
+        )}
         {gamePhase === "slides" && <Slides />}
       </GameBorder>
     </div>
