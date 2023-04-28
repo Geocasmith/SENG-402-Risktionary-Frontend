@@ -1,18 +1,71 @@
 {
-    "1": {
-      "word": "Bus Factor",
-      "description": "The bus factor is a risk when only one developer has certain knowledge or access and they get “hit by a bus” and suddenly drop out of the project. A consequence of this risk is the rest of the team having to relearn their knowledge if other team mates had not learned their certain knowledge. If the member had special access such as a password that was not shared the team may loose that access.",
-      "path": "./bus.png"
+  "1": {
+  "word": "Injury",
+  "description": "Injury refers to the risk of physical harm during an activity or in the workplace. Consequences of injuries can range from minor discomfort to severe, life-altering outcomes, potentially impacting the individual's ability to continue working or participating in activities. To prevent injuries, it is essential to prioritize safety measures, adhere to proper ergonomics, and provide necessary training to ensure everyone understands the importance of a safe environment.",
+  "path": "./injury.png"
+  },
+  "2": {
+  "word": "Data Loss",
+  "description": "Data loss is the risk of losing valuable information due to technical failures, human errors, or malicious attacks. Consequences of data loss can include lost productivity, financial costs, and damage to an organization's reputation. Prevention measures include implementing regular data backups, using secure storage solutions, and educating employees about the importance of data security and best practices.",
+  "path": "./data_loss.png"
+  },
+  "3": {
+  "word": "Bus Factor",
+  "description": "The bus factor is a risk when only one developer has certain knowledge or access and they get “hit by a bus” and suddenly drop out of the project. A consequence of this risk is the rest of the team having to relearn their knowledge if other team mates had not learned their certain knowledge. If the member had special access such as a password that was not shared the team may loose that access.",
+  "path": "./bus_factor.png"
+  },
+  "4": {
+  "word": "Assignments",
+  "description": "Assignments pose the risk of students not completing their work on time or not understanding the material, leading to poor performance and lack of knowledge acquisition. Consequences include lower grades and a reduced ability to apply the learned concepts in future coursework or professional endeavors. Prevention strategies involve setting clear expectations, providing resources and support, and encouraging time management and effective study habits.",
+  "path": "./assignments.png"
+  },
+  "5": {
+  "word": "Procrastination",
+  "description": "Procrastination is the act of delaying or postponing tasks, often leading to increased stress and reduced productivity. The consequences of procrastination can include poor performance, missed deadlines, and a negative impact on mental health. Preventing procrastination involves setting realistic goals, creating a structured schedule, and fostering a sense of accountability and motivation.",
+  "path": "./procrastination.png"
+  },
+  "6": {
+  "word": "Slow Internet",
+  "description": "Slow internet is a risk that can hinder productivity, communication, and access to vital information. Consequences include frustration, decreased efficiency, and potential loss of business or educational opportunities. Prevention measures include investing in reliable internet service providers, using wired connections when possible, and optimizing network settings and hardware.",
+  "path": "./slow_internet.png"
+  },
+  "7": {
+  "word": "Arguments",
+  "description": "Arguments pose the risk of damaging relationships, disrupting team dynamics, and hindering collaborative efforts. Consequences of arguments can include decreased morale, reduced productivity, and potential loss of valuable team members. Preventing arguments involves fostering open communication, encouraging active listening and empathy, and providing conflict resolution training.",
+  "path": "./arguments.png"
+  },"8": {
+    "word": "Knowledge Silo",
+    "description": "A knowledge silo is a risk where information is isolated within a specific group or individual, limiting its accessibility to others who might benefit from it. Consequences include decreased collaboration, inefficient workflows, and a hindered ability to make informed decisions. To prevent knowledge silos, organizations should promote cross-functional collaboration, open communication, and a culture of knowledge sharing.",
+    "path": "./knowledge_silo.png"
     },
-    "2": {
-      "word": "Swine Flu",
-      "description": "Swine flu can make the programmers sick.",
-      "path": "./swine.png"
+    "9": {
+    "word": "Sleeping In",
+    "description": "Sleeping in refers to the risk of missing important deadlines, meetings, or events due to oversleeping. Consequences can include reduced productivity, negative impressions on others, and missed opportunities. Prevention strategies involve maintaining a consistent sleep schedule, using reliable alarm systems, and practicing good sleep hygiene.",
+    "path": "./sleeping_in.png"
     },
-    "3": {
-      "word": "Fire",
-      "description": "A fire can burn down the building and damage infrastructure.",
-      "path": "./fire.png"
+    "10": {
+    "word": "Last Minute Integration",
+    "description": "Last minute integration is the risk of attempting to combine various components of a project just before a deadline, which can lead to errors, incompatibilities, and poor overall performance. Consequences include increased stress, potential failure to meet objectives, and a lower quality end product. Prevention involves proper planning, regular progress checks, and setting interim milestones to ensure timely integration.",
+    "path": "./last_minute_integration.png"
+    },
+    "11": {
+    "word": "Swine Flu",
+    "description": "Swine flu is a viral infection that poses a risk to public health and can spread rapidly, leading to illness, hospitalizations, and potential fatalities. Consequences of a swine flu outbreak include strained healthcare resources, economic impact, and disrupted daily life. Prevention measures include encouraging proper hygiene, vaccination campaigns, public awareness efforts, and effective monitoring and containment strategies.",
+    "path": "./swine_flu.png"
+    },
+    "12": {
+    "word": "Jobs",
+    "description": "Jobs pose the risk of potential unemployment or underemployment, which can negatively impact individuals and communities. Consequences of job-related risks include financial instability, decreased quality of life, and increased social challenges. Prevention strategies involve promoting economic growth, investing in education and skills development, and supporting workforce reintegration programs.",
+    "path": "./jobs.png"
+    },
+    "13": {
+    "word": "Earthquake",
+    "description": "Earthquakes are natural disasters that present the risk of significant damage to infrastructure, property, and human lives. Consequences of earthquakes include loss of life, economic disruptions, and long-term recovery efforts. Prevention and mitigation efforts involve adhering to building codes designed for earthquake resistance, investing in early warning systems, and promoting earthquake preparedness education.",
+    "path": "./earthquake.png"
+    },
+    "14": {
+    "word": "Acronyms",
+    "description": "Acronyms pose the risk of miscommunication and confusion, particularly when they are industry-specific or not universally understood. Consequences of acronym-related misunderstandings can include wasted time, incorrect interpretations, and potential errors. Prevention strategies involve using clear, concise language, providing explanations for acronyms when necessary, and encouraging open communication to ensure all parties understand the intended message.",
+    "path": "./acronyms.png"
     }
   }
-  

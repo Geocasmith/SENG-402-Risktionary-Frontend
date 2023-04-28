@@ -1,8 +1,54 @@
-import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
+// import { useSelector } from "react-redux";
+// import { selectVoteKey } from "../../store";
+// import socket from "../../socket";
+// import GameWordAccessor from "../helper/GameWordAccessor";
+// import TopBar from "../TopBar";
+
+// const Vote: React.FC = () => {
+//   const [risk, setRisk] = useState(5);
+//   const [probability, setProbability] = useState(5);
+//   const [drawing, setDrawing] = useState(5);
+//   const [hasVoted, setHasVoted] = useState(false);
+//   const [isDrawer, setIsDrawer] = useState(false);
+//   const voteKey = useSelector(selectVoteKey);
+//   const voteName = GameWordAccessor.getGameWordNameByKey(voteKey);
+
+//   useEffect(() => {
+//     const isDrawing = localStorage.getItem("isDrawer");
+//     if (isDrawing) {
+//       setIsDrawer(JSON.parse(isDrawing));
+//     }
+//   }, []);
+
+//   const handleSubmit = () => {
+//     if (hasVoted && !isDrawer) return;
+
+//     const voteData = {
+//       risk,
+//       probability,
+//       drawing,
+//     };
+
+//     socket.emit("submit", voteData);
+
+//     fetch("/vote", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(voteData),
+//     });
+
+//     if (!isDrawer) {
+//       setHasVoted(true);
+//     }
+//   };
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { selectVoteKey } from "./../../store";
-import socket from "./../../socket";
-import GameWordAccessor from "./../helper/GameWordAccessor";
+import { selectVoteKey } from "../../store";
+import socket from "../../socket";
+import GameWordAccessor from "../helper/GameWordAccessor";
 import TopBar from "../TopBar";
 
 const Vote: React.FC = () => {
@@ -12,6 +58,13 @@ const Vote: React.FC = () => {
   const voteKey = useSelector(selectVoteKey);
   const voteName = GameWordAccessor.getGameWordNameByKey(voteKey);
 
+  // useEffect(() => {
+  //   const isDrawing = localStorage.getItem("isDrawer");
+  //   if (isDrawing) {
+  //     setIsDrawer(JSON.parse(isDrawing));
+  //   }
+  // }, []);
+
   const handleSubmit = () => {
     const voteData = {
       risk,
@@ -19,7 +72,6 @@ const Vote: React.FC = () => {
       drawing,
     };
 
-    // Emit the "submitVote" event with the vote data
     socket.emit("submit", voteData);
 
     fetch("/vote", {
@@ -28,10 +80,8 @@ const Vote: React.FC = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(voteData),
-      //TODO: add in user data
     });
   };
-
   return (
     <>
       <TopBar />
@@ -80,6 +130,17 @@ const Vote: React.FC = () => {
               className="w-full"
             />
           </div>
+          {/* <button
+            onClick={handleSubmit}
+            className={`${
+              hasVoted
+                ? "bg-gray-300 hover:bg-gray-300 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+            } text-white py-2 px-4 rounded-md w-full`}
+            disabled={hasVoted}
+          >
+            Submit
+          </button> */}
           <button
             onClick={handleSubmit}
             className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md w-full"

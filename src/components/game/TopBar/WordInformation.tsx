@@ -1,24 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 interface WordInformationProps {
   isDrawing: boolean;
   word: string;
+  time: number;
 }
 
 const WordInformation: React.FC<WordInformationProps> = ({
   isDrawing,
   word,
+  time,
 }) => {
-  const maskedWord = isDrawing
-    ? word
-    : word
-        .split("")
-        .map((char) => (char === " " ? " ‎‎‎    " : "_ "))
-        .join("");
+  const [partialWord, setPartialWord] = useState("");
+  const [revealedIndices, setRevealedIndices] = useState(new Set<number>());
+
+  useEffect(() => {
+    if (!isDrawing) {
+      const revealFrequency = 60 / Math.ceil(word.length / 3); // Calculate the reveal frequency
+      const revealCount = Math.floor((60 - time) / revealFrequency); // Calculate the number of characters to reveal based on the time
+
+      let newRevealedIndices = new Set<number>(revealedIndices);
+
+      while (newRevealedIndices.size < revealCount) {
+        const index = Math.floor(Math.random() * word.length);
+        if (word[index] !== " ") {
+          newRevealedIndices.add(index);
+        }
+      }
+
+      setRevealedIndices(newRevealedIndices);
+
+      setPartialWord(
+        word
+          .split("")
+          .map((char, index) =>
+            newRevealedIndices.has(index) || char === " " ? char : "_"
+          )
+          .join(" ")
+      );
+    }
+  }, [isDrawing, word, time, revealedIndices]);
 
   const displayText = isDrawing
     ? `You are drawing: ${word}`
-    : `Guess the word: ${maskedWord}`;
+    : `Guess the word: ${partialWord}`;
 
   return (
     <div style={{ fontSize: "24px", marginBottom: "10px" }}>{displayText}</div>

@@ -13,8 +13,12 @@ const DrawingCanvas: React.FC = () => {
   const [color, setColor] = useState("#000000");
   const [socket, setSocket] = useState<Socket | null>(null);
   const [timeUp, setTimeUp] = useState(false);
+  const [time, setTime] = useState(60);
 
-  const isDrawing = localStorage.getItem("isDrawing") === "true";
+  // Check both isDrawing and isTeacher conditions
+  const isDrawing =
+    localStorage.getItem("isDrawing") === "true" &&
+    localStorage.getItem("isTeacher") === "true";
   const voteKey = useSelector(selectVoteKey);
   const word = GameWordAccessor.getGameWordNameByKey(voteKey) ?? "";
   const handleTimeUp = () => {
@@ -82,14 +86,22 @@ const DrawingCanvas: React.FC = () => {
     if (!context) return;
 
     const handleMouseDown = (event: MouseEvent) => {
+      if (!isDrawing) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
       setDrawing(true);
       context.beginPath();
-      context.moveTo(event.clientX, event.clientY);
+      context.moveTo(x, y);
 
       if (socket) {
         socket.emit("draw", {
-          x: event.clientX,
-          y: event.clientY,
+          x,
+          y,
           color,
           drawing: true,
         });
@@ -122,6 +134,7 @@ const DrawingCanvas: React.FC = () => {
     const handleMouseUp = () => {
       setDrawing(false);
     };
+
     //@ts-ignore
     canvas.addEventListener("mousedown", handleMouseDown);
     //@ts-ignore
@@ -135,7 +148,7 @@ const DrawingCanvas: React.FC = () => {
       canvas.removeEventListener("mousemove", handleMouseMove);
       canvas.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [drawing, color, socket]);
+  }, [drawing, color, socket, isDrawing]);
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
@@ -156,12 +169,13 @@ const DrawingCanvas: React.FC = () => {
   return (
     <div>
       <div className="word-information">
-        <WordInformation isDrawing={isDrawing} word={word} />
+        <WordInformation isDrawing={isDrawing} word={word} time={time} />
         {!timeUp && (
           <Timer
             onFinish={() => {
               handleTimeUp();
             }}
+            onTimeChange={(newTime) => setTime(newTime)} // Add this line to update the time state
           />
         )}
       </div>

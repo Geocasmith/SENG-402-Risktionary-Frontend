@@ -24,11 +24,9 @@ import Vote from "./components/Vote/Vote";
 import DisplayVotes from "./components/Vote/DisplayVotes";
 
 function App() {
-
   return (
     <div>
       <Game />
-      
     </div>
   );
 }

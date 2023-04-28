@@ -71,9 +71,7 @@ const Game: React.FC = () => {
         {gamePhase === "lobby" && <Lobby />}
         {gamePhase === "game" && <Container />}
         {gamePhase === "vote" && <Vote />}
-        {gamePhase === "displayVotes" && (
-          <DisplayVotes votes={receivedVotes} />
-        )}
+        {gamePhase === "displayVotes" && <DisplayVotes votes={receivedVotes} />}
         {gamePhase === "slides" && <Slides />}
       </GameBorder>
     </div>

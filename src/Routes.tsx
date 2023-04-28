@@ -5,6 +5,7 @@ import SignUp from "./components/login/SignUp";
 import Login from "./components/login/Login";
 import DisplayVotes from "./components/Vote/Heatmap";
 import Slides from "./components/game/Slides";
+import Heatmap from "./components/Vote/Heatmap";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/display" element={<DisplayVotes />} />
+        <Route path="/heatmap" element={<Heatmap />} />
         <Route path="/info" element={<Slides />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />

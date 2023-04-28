@@ -1,29 +1,34 @@
+// Timer.tsx
 import React, { useState, useEffect } from "react";
 
 interface TimerProps {
   onFinish: () => void;
+  onTimeChange?: (newTime: number, revealProgress: number) => void;
 }
 
-const Timer: React.FC<TimerProps> = ({ onFinish }) => {
+const Timer: React.FC<TimerProps> = ({ onFinish, onTimeChange }) => {
   const [time, setTime] = useState(60);
 
   useEffect(() => {
     const timerId = setInterval(() => {
       setTime((prevTime) => {
-        if (prevTime === 1) {
+        const newTime = prevTime - 1;
+        const revealProgress = 1 - newTime / 60;
+
+        onTimeChange && onTimeChange(newTime, revealProgress);
+        if (newTime === 0) {
           clearInterval(timerId);
           onFinish();
         }
-        return prevTime - 1;
+        return newTime;
       });
     }, 1000);
 
     return () => {
       clearInterval(timerId);
     };
-  }, [onFinish]);
+  }, [onFinish, onTimeChange]);
 
   return <div>{time}</div>;
 };
-
 export default Timer;
