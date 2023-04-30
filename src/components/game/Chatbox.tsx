@@ -25,7 +25,7 @@ const ChatBox: React.FC = () => {
   const chatAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3001/chat");
+    const newSocket = io("http://132.181.18.66:3001/chat");
     setSocket(newSocket);
 
     return () => {
