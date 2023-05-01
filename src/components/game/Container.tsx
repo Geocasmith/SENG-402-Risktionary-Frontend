@@ -1,13 +1,24 @@
 import React from "react";
 import DrawingCanvas from "./DrawingCanvas";
 import ChatBox from "./Chatbox";
+import TopBar from "../TopBar";
 
 const Container: React.FC = () => {
   return (
-    <div style={{ display: "flex" }}>
+    <>
+      <TopBar />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "calc(100vh - 8em)", // Added this line
+      }}
+    >
       <DrawingCanvas />
       <ChatBox />
     </div>
+    </>
   );
 };
 

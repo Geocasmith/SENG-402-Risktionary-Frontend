@@ -14,6 +14,7 @@ interface Message {
 }
 
 const ChatBox: React.FC = () => {
+  const displayName = localStorage.getItem("displayName") || "User";
   const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
@@ -26,11 +27,10 @@ const ChatBox: React.FC = () => {
   const chatAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Replace the hardcoded URL and options with the function call
     const { url, options } = getSocketConnectionConfig();
     const newSocket = io(`${url}/chat`, options);
     setSocket(newSocket);
-  
+
     return () => {
       newSocket.disconnect();
     };
@@ -93,7 +93,7 @@ const ChatBox: React.FC = () => {
     }
 
     const chatMessage: Message = {
-      username: "User",
+      username: displayName,
       message: message.trim(),
     };
 
@@ -107,13 +107,19 @@ const ChatBox: React.FC = () => {
     }
   };
 
+ 
   return (
-    <div className="flex flex-col 520">
+    <div
+      className="flex flex-col h-screen 520" // Add the h-screen class here
+      style={{
+        maxHeight: "calc(100vh - 11.7em)", // Add this line to limit the max height
+      }}
+    >
       <div
         ref={chatAreaRef}
         className="overflow-y-auto p-4 flex-grow"
         style={{
-          maxHeight: "630px", // Set max-height to desired value
+          maxHeight: "calc(100% - 64px)", // Change this line to adjust the height of the chat area
           overflowY: "scroll", // Enable scrolling on overflow
         }}
       >
@@ -124,10 +130,6 @@ const ChatBox: React.FC = () => {
           </p>
         ))}
       </div>
-      <Timer
-        onFinish={handleRoundFinish}
-        onTimeChange={(time) => setRemainingTime(time)}
-      />
       <div className="flex p-4">
         <input
           type="text"
@@ -152,5 +154,4 @@ const ChatBox: React.FC = () => {
     </div>
   );
 };
-
 export default ChatBox;

@@ -4,6 +4,7 @@ import { selectVoteKey } from "../../store";
 import exampleImage from "./bus.png";
 import socket from "./../../socket";
 import GameWordAccessor from "./../helper/GameWordAccessor";
+import TopBar from "../TopBar";
 
 const Slides: React.FC = () => {
   const voteKey = useSelector(selectVoteKey);
@@ -18,7 +19,13 @@ const Slides: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <>
+    <TopBar />
+    <div
+        className="flex flex-col items-center justify-center bg-gray-50"
+        style={{ height: "calc(100vh - 8em)" }} // Change this line
+      >
+        <div className="flex flex-col items-center justify-center space-y-4">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold my-4 text-center">{word}</h2>
         <div className="my-4">
@@ -44,6 +51,8 @@ const Slides: React.FC = () => {
         </div>
       </div>
     </div>
+    </div>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import * as h337 from "heatmap.js";
 import "./../../index.css";
 import GameWordAccessor from "./../helper/GameWordAccessor";
 import socket from "./../../socket";
+import TopBar from "../TopBar";
 
 interface Vote {
   risk: number;
@@ -18,6 +19,7 @@ interface DisplayVotesProps {
 const DisplayVotes: React.FC<DisplayVotesProps> = ({ votes }) => {
   const voteKey = useSelector(selectVoteKey);
   const voteName = GameWordAccessor.getGameWordNameByKey(voteKey);
+  const isDrawing = localStorage.getItem("isDrawing") === "true";
 
   useEffect(() => {
     const heatmaps = document.querySelectorAll(".heatmap-container");
@@ -53,13 +55,28 @@ const DisplayVotes: React.FC<DisplayVotesProps> = ({ votes }) => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-10">
+    <>
+      <TopBar />
+    <div
+      className="flex flex-col items-center justify-center"
+      style={{ minHeight: "calc(100vh - 8rem)" }} // Add this style
+    >
       <h1 className="text-4xl font-bold">{voteName}</h1>
 
-      <div className="flex items-center space-x-4">
-        <p>Probability</p>
+      <div className="relative mb-8">
+        <div
+          className="absolute left-[-32px] text-center"
+          style={{
+            top: "50%",
+            transform: "translateY(-50%) translateX(-100%) rotate(180deg)",
+            writingMode: "vertical-rl",
+            textOrientation: "mixed",
+          }}
+        >
+          Probability
+        </div>
         <div className="relative w-96 h-96 grid-pattern heatmap-container">
-          <div className="text-center absolute bottom-[-24px] w-full">Risk</div>
+          <div className="text-center absolute bottom-[-45px] w-full">Risk</div>
           {Array.from({ length: 11 }, (_, i) => i).map((i) => (
             <React.Fragment key={i}>
               {i !== 0 && (
@@ -89,13 +106,16 @@ const DisplayVotes: React.FC<DisplayVotesProps> = ({ votes }) => {
         </div>
       </div>
 
-      <button
-        onClick={handleNextButtonClick}
-        className="mt-8 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      >
-        Next
-      </button>
+      {isDrawing && (
+        <button
+          onClick={handleNextButtonClick}
+          className="mt-8 group relative w-half flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Next
+        </button>
+      )}
     </div>
+    </>
   );
 };
 

@@ -1,49 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import { useSelector } from "react-redux";
-// import { selectVoteKey } from "../../store";
-// import socket from "../../socket";
-// import GameWordAccessor from "../helper/GameWordAccessor";
-// import TopBar from "../TopBar";
-
-// const Vote: React.FC = () => {
-//   const [risk, setRisk] = useState(5);
-//   const [probability, setProbability] = useState(5);
-//   const [drawing, setDrawing] = useState(5);
-//   const [hasVoted, setHasVoted] = useState(false);
-//   const [isDrawer, setIsDrawer] = useState(false);
-//   const voteKey = useSelector(selectVoteKey);
-//   const voteName = GameWordAccessor.getGameWordNameByKey(voteKey);
-
-//   useEffect(() => {
-//     const isDrawing = localStorage.getItem("isDrawer");
-//     if (isDrawing) {
-//       setIsDrawer(JSON.parse(isDrawing));
-//     }
-//   }, []);
-
-//   const handleSubmit = () => {
-//     if (hasVoted && !isDrawer) return;
-
-//     const voteData = {
-//       risk,
-//       probability,
-//       drawing,
-//     };
-
-//     socket.emit("submit", voteData);
-
-//     fetch("/vote", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(voteData),
-//     });
-
-//     if (!isDrawer) {
-//       setHasVoted(true);
-//     }
-//   };
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectVoteKey } from "../../store";
@@ -85,8 +39,11 @@ const Vote: React.FC = () => {
   return (
     <>
       <TopBar />
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="container mx-auto px-4">
+      <div
+        className="flex flex-col items-center justify-center bg-gray-50"
+        style={{ height: "calc(100vh - 8rem)" }} // Change this line
+      >
+        <div className="container mx-auto px-4 space-y-8">
           <h2 className="text-4xl font-bold my-4 text-center">{voteName}</h2>
           <div className="my-4">
             <div className="flex justify-between">
