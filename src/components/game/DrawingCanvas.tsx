@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, MouseEvent } from "react";
 import { useSelector } from "react-redux";
 import { selectVoteKey } from "./../../store";
 import { io, Socket } from "socket.io-client";
+import socket from "./../../socket";
 import WordInformation from "./TopBar/WordInformation";
 import Timer from "./TopBar/Timer";
 import GameWordAccessor from "./../helper/GameWordAccessor";
@@ -26,11 +27,12 @@ const DrawingCanvas: React.FC = () => {
   };
 
   useEffect(() => {
-    const newSocket = io("https://csse-risk1.canterbury.ac.nz:3001", { secure: true, transports: ['websocket'] });
-    setSocket(newSocket);
+    setSocket(socket);
 
     return () => {
-      newSocket.disconnect();
+      if(socket!==null){
+      socket.disconnect();
+      }
     };
   }, []);
 
