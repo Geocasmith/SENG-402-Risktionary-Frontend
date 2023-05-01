@@ -26,7 +26,7 @@ const DrawingCanvas: React.FC = () => {
   };
 
   useEffect(() => {
-    const newSocket = io("https://csse-risk1.canterbury.ac.nz/", { secure: true, transports: ['websocket'] });
+    const newSocket = io("https://csse-risk1.canterbury.ac.nz:3001", { secure: true, transports: ['websocket'] });
     setSocket(newSocket);
 
     return () => {
