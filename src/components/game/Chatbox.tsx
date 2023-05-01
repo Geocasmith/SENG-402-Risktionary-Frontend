@@ -26,7 +26,9 @@ const ChatBox: React.FC = () => {
 
   useEffect(() => {
     // const newSocket = io("http://localhost:3001/chat");
-    const newSocket = io("https://132.181.18.66/chat");
+    // const newSocket = io("https://132.181.18.66/chat");
+    const newSocket = io("https://132.181.18.66/chat", { secure: true, transports: ['websocket'] });
+
     setSocket(newSocket);
 
     return () => {
