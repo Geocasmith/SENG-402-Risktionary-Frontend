@@ -7,9 +7,14 @@ import Timer from "./TopBar/Timer";
 import GameWordAccessor from "./../helper/GameWordAccessor";
 import "./../../App.css";
 import { getSocketConnectionConfig } from "./../../config";
+import cx from "classnames";
 
 
-const DrawingCanvas: React.FC = () => {
+interface DrawingCanvasProps {
+  className?: string;
+}
+
+const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
   const [color, setColor] = useState("#000000");
@@ -170,7 +175,7 @@ const DrawingCanvas: React.FC = () => {
   const colors = ["#000000", "#FF0000", "#FFFF00", "#00FF00", "#0000FF"];
 
   return (
-    <div>
+    <div className={className}>
       <div className="word-information">
         <WordInformation isDrawing={isDrawing} word={word} time={time} />
         {!timeUp && (
@@ -182,6 +187,10 @@ const DrawingCanvas: React.FC = () => {
           />
         )}
       </div>
+
+      {isDrawing && (
+      <>
+        
       <div className="color-picker">
         {colors.map((c) => (
           <div
@@ -198,12 +207,15 @@ const DrawingCanvas: React.FC = () => {
         />
       </div>
       <button onClick={clearCanvas}>Clear</button>
+      </>
+    )}
+
       <canvas
-        ref={canvasRef}
-        style={{ border: "1px solid black", display: "block" }}
-        width="800"
-        height="600"
-      ></canvas>
+      ref={canvasRef}
+      className={cx("border border-black", "hidden md:block")}
+      width="800"
+      height="600"
+    ></canvas>
     </div>
   );
 };

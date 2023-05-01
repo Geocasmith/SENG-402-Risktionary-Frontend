@@ -7,17 +7,17 @@ const Container: React.FC = () => {
   return (
     <>
       <TopBar />
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "calc(100vh - 8em)", // Added this line
-      }}
-    >
-      <DrawingCanvas />
-      <ChatBox />
-    </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "calc(100vh - 8em)",
+        }}
+      >
+        <DrawingCanvas className="hidden md:block" /> {/* Add hidden and md:block here */}
+        <ChatBox />
+      </div>
     </>
   );
 };

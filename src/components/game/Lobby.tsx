@@ -1,26 +1,38 @@
 // Lobby.tsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { io } from "socket.io-client";
 import { setGamePhase } from "./../../reducers/gameSlice";
 import socket from "./../../socket";
 import TopBar from "../TopBar";
 import { getUserScore } from "./../helper/ScoreHelper";
+import "./Lobby.css";
 
 const Lobby: React.FC = () => {
   const dispatch = useDispatch();
+  const [playerList, setPlayerList] = useState<string[]>([]);
+  
+  const displayName = localStorage.getItem("displayName") || "";
 
   useEffect(() => {
+    // Emit the "returnToLobby" event
+    socket.emit("returnToLobby");
     // Listen for the "game started" event
     socket.on("started", () => {
       dispatch(setGamePhase("game"));
     });
 
+    socket.on("updatePlayerList", (updatedPlayerList: string[]) => {
+      const currentUser = localStorage.getItem("displayName");
+      const filteredPlayerList = updatedPlayerList.filter((player) => player !== currentUser);
+      setPlayerList(filteredPlayerList);
+    });
+
     // Cleanup on unmount
     return () => {
       socket.off("started");
+      socket.off("updatePlayerList");
     };
-  }, [dispatch]);
+  }, [dispatch, displayName]);
 
   const handleStartButtonClick = () => {
     // Emit the "start game" event
@@ -35,7 +47,7 @@ const Lobby: React.FC = () => {
       <TopBar />
       <div
         className="flex flex-col items-center justify-center bg-gray-50"
-        style={{ height: "calc(100vh - 8em)" }} // Change this line
+        style={{ height: "calc(100vh - 8em)" }}
       >
         <div className="flex flex-col items-center justify-center space-y-4">
           <h2 className="text-center text-3xl font-extrabold text-gray-900">
@@ -43,6 +55,17 @@ const Lobby: React.FC = () => {
           </h2>
           <div className="text-center mt-4 text-xl font-bold text-gray-900">
             Your score: {getUserScore()}
+          </div>
+          <div className="player-list-container">
+          <ul className="player-list">
+        {/* Display the current user's name */}
+        <li className="player-name">{localStorage.getItem("displayName")}</li>
+        {playerList.map((playerName, index) => (
+          <li key={index} className="player-name">
+            {playerName}
+          </li>
+        ))}
+      </ul>
           </div>
           {isDrawing && (
             <button

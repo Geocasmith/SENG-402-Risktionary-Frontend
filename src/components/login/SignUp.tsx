@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import socket from "./../../socket";
 import { useNavigate } from "react-router-dom";
 
 
@@ -18,13 +19,14 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const response = await fetch("/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(signUpData),
-    });
+    socket.emit("signup", signUpData);
+    // const response = await fetch("/api/signup", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(signUpData),
+    // });
 
     // if (response.ok) {
     //   sessionStorage.setItem("signedIn", "true");
@@ -85,18 +87,18 @@ const SignUp: React.FC = () => {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Sign up
+              Join
             </button>
           </div>
         </form>
-        <div className="text-center mt-2">
+        {/* <div className="text-center mt-2">
           <Link
             to="/login"
             className="font-medium text-indigo-600 hover:text-indigo-500"
           >
             Already have an account? Log in
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );
