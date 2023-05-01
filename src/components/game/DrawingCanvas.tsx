@@ -18,8 +18,7 @@ const DrawingCanvas: React.FC = () => {
 
   // Check both isDrawing and isTeacher conditions
   const isDrawing =
-    localStorage.getItem("isDrawing") === "true" &&
-    localStorage.getItem("isTeacher") === "true";
+    localStorage.getItem("isDrawing") === "true";
   const voteKey = useSelector(selectVoteKey);
   const word = GameWordAccessor.getGameWordNameByKey(voteKey) ?? "";
   const handleTimeUp = () => {
