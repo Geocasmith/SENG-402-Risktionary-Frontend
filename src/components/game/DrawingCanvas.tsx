@@ -6,6 +6,8 @@ import WordInformation from "./TopBar/WordInformation";
 import Timer from "./TopBar/Timer";
 import GameWordAccessor from "./../helper/GameWordAccessor";
 import "./../../App.css";
+import { getSocketConnectionConfig } from "./../../config";
+
 
 const DrawingCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -25,9 +27,11 @@ const DrawingCanvas: React.FC = () => {
   };
 
   useEffect(() => {
-    const newSocket = io("https://csse-risk1.canterbury.ac.nz:3001", { secure: true, transports: ['websocket'] });
+    // Replace the hardcoded URL and options with the function call
+    const { url, options } = getSocketConnectionConfig();
+    const newSocket = io(url, options);
     setSocket(newSocket);
-
+  
     return () => {
       newSocket.disconnect();
     };

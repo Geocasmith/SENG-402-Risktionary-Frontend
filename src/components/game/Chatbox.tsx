@@ -4,6 +4,7 @@ import GameWordAccessor from "./../helper/GameWordAccessor";
 import { useSelector } from "react-redux";
 import { selectVoteKey } from "./../../store";
 import { updateUserScore } from "./../helper/ScoreHelper";
+import { getSocketConnectionConfig } from "./../../config";
 import Timer from "./TopBar/Timer";
 
 interface Message {
@@ -25,12 +26,11 @@ const ChatBox: React.FC = () => {
   const chatAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // const newSocket = io("http://localhost:3001/chat");
-    // const newSocket = io("https://132.181.18.66/chat");
-    const newSocket = io("https://csse-risk1.canterbury.ac.nz/chat", { secure: true, transports: ['websocket'] });
-
+    // Replace the hardcoded URL and options with the function call
+    const { url, options } = getSocketConnectionConfig();
+    const newSocket = io(`${url}/chat`, options);
     setSocket(newSocket);
-
+  
     return () => {
       newSocket.disconnect();
     };

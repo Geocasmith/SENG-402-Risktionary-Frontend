@@ -1,9 +1,8 @@
 // socket.ts
 import { io } from "socket.io-client";
+import { getSocketConnectionConfig } from "./config";
 
-// const socket = io("http://localhost:3001");
-// const socket = io("https://132.181.18.66:3001");
-const socket = io("https://csse-risk1.canterbury.ac.nz:3001", { secure: true, transports: ['websocket'] });
-
+const { url, options } = getSocketConnectionConfig();
+const socket = io(url, options);
 
 export default socket;
