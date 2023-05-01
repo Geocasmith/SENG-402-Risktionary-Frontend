@@ -11,6 +11,7 @@ const Slides: React.FC = () => {
   const word = GameWordAccessor.getGameWordNameByKey(voteKey);
   const description = GameWordAccessor.getGameWordDescriptionByKey(voteKey);
   const path = GameWordAccessor.getGameWordPathByKey(voteKey);
+  const isDrawing = localStorage.getItem("isDrawing") === "true";
 
   const handleNextButtonClick = () => {
     // Emit the "start game" event
@@ -38,6 +39,7 @@ const Slides: React.FC = () => {
             className="mx-auto w-full max-w-md"
           />
         </div>
+        {isDrawing && (
         <div className="flex justify-between mt-8">
           <button
             onClick={handleNextButtonClick}
@@ -49,6 +51,7 @@ const Slides: React.FC = () => {
             Summary
           </button>
         </div>
+        )}
       </div>
     </div>
     </div>
