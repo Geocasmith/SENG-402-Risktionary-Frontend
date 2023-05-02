@@ -12,6 +12,7 @@ const Lobby: React.FC = () => {
   const dispatch = useDispatch();
   const [playerList, setPlayerList] = useState<string[]>([]);
   const currentVoteKey = useSelector(selectVoteKey);
+  console.log("Lobby component: currentVoteKey", currentVoteKey);
   
   const displayName = localStorage.getItem("displayName") || "";
 

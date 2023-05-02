@@ -40,6 +40,7 @@ const voteSlice = createSlice({
       state.key += 1;
     },
     setKey: (state, action) => {
+      console.log("Reducer: Updated voteKey", action.payload);
       state.key = action.payload;
     },
   },
