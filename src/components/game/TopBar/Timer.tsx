@@ -7,13 +7,13 @@ interface TimerProps {
 }
 
 const Timer: React.FC<TimerProps> = ({ onFinish, onTimeChange }) => {
-  const [time, setTime] = useState(60);
+  const [time, setTime] = useState(90);
 
   useEffect(() => {
     const timerId = setInterval(() => {
       setTime((prevTime) => {
         const newTime = prevTime - 1;
-        const revealProgress = 1 - newTime / 60;
+        const revealProgress = 1 - newTime / 90;
 
         onTimeChange && onTimeChange(newTime, revealProgress);
         if (newTime === 0) {

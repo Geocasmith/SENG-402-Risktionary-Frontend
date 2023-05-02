@@ -22,8 +22,8 @@ const ChatBox: React.FC = () => {
   const [hasGuessedWord, setHasGuessedWord] = useState<boolean>(false);
   const [roundFinished, setRoundFinished] = useState<boolean>(false);
   const voteKey = useSelector(selectVoteKey);
-  const [time, setTime] = useState(60);
-  const [remainingTime, setRemainingTime] = useState(60);
+  const [time, setTime] = useState(90);
+  const [remainingTime, setRemainingTime] = useState(90);
   const chatAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -20,7 +20,9 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
   const [color, setColor] = useState("#000000");
   const [socket, setSocket] = useState<Socket | null>(null);
   const [timeUp, setTimeUp] = useState(false);
-  const [time, setTime] = useState(60);
+  const [time, setTime] = useState(90);
+  const [strokeSize, setStrokeSize] = useState(2);
+
 
   // Check both isDrawing and isTeacher conditions
   const isDrawing =
@@ -89,23 +91,19 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
+  
     const context = canvas.getContext("2d");
     if (!context) return;
-
-    const handleMouseDown = (event: MouseEvent) => {
+  
+    const handleInteractionStart = (x: number, y: number) => {
       if (!isDrawing) return;
       const canvas = canvasRef.current;
       if (!canvas) return;
-
-      const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
+  
       setDrawing(true);
       context.beginPath();
       context.moveTo(x, y);
-
+  
       if (socket) {
         socket.emit("draw", {
           x,
@@ -115,20 +113,17 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
         });
       }
     };
-
-    const handleMouseMove = (event: MouseEvent) => {
+  
+    const handleInteractionMove = (x: number, y: number) => {
       if (!drawing) return;
       const canvas = canvasRef.current;
       if (!canvas) return;
-
-      const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
+  
       context.strokeStyle = color;
+      context.lineWidth = strokeSize; // Add this line for stroke size support
       context.lineTo(x, y);
       context.stroke();
-
+  
       if (socket) {
         socket.emit("draw", {
           x,
@@ -138,25 +133,66 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
         });
       }
     };
-
+  
+    const handleMouseDown = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      handleInteractionStart(x, y);
+    };
+  
+    const handleMouseMove = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      handleInteractionMove(x, y);
+    };
+  
+    const handleTouchStart = (event: TouchEvent) => {
+      event.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const x = event.touches[0].clientX - rect.left;
+      const y = event.touches[0].clientY - rect.top;
+      handleInteractionStart(x, y);
+    };
+  
+    const handleTouchMove = (event: TouchEvent) => {
+      event.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const x = event.touches[0].clientX - rect.left;
+      const y = event.touches[0].clientY - rect.top;
+      handleInteractionMove(x, y);
+    };
+  
     const handleMouseUp = () => {
       setDrawing(false);
     };
-
-    //@ts-ignore
+  
+    const handleTouchEnd = (event: TouchEvent) => {
+      event.preventDefault();
+      setDrawing(false);
+    };
+    // @ts-ignore
     canvas.addEventListener("mousedown", handleMouseDown);
-    //@ts-ignore
+        // @ts-ignore
     canvas.addEventListener("mousemove", handleMouseMove);
     canvas.addEventListener("mouseup", handleMouseUp);
-
+    canvas.addEventListener("touchstart", handleTouchStart);
+    canvas.addEventListener("touchmove", handleTouchMove);
+    canvas.addEventListener("touchend", handleTouchEnd);
+  
     return () => {
-      //@ts-ignore
+          // @ts-ignore
       canvas.removeEventListener("mousedown", handleMouseDown);
-      //@ts-ignore
+          // @ts-ignore
       canvas.removeEventListener("mousemove", handleMouseMove);
       canvas.removeEventListener("mouseup", handleMouseUp);
+      canvas.removeEventListener("touchstart", handleTouchStart);
+      canvas.removeEventListener("touchmove", handleTouchMove);
+      canvas.removeEventListener("touchend", handleTouchEnd);
     };
   }, [drawing, color, socket, isDrawing]);
+  
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
@@ -172,7 +208,10 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
     }
   };
 
-  const colors = ["#000000", "#FF0000", "#FFFF00", "#00FF00", "#0000FF"];
+  const colors = [
+    "#000000", "#FF0000", "#FFFF00", "#00FF00", "#0000FF",
+    "#FFA500", "#8A2BE2", "#5F9EA0", "#FFC0CB", "#808080",
+  ];
 
   return (
     <div className={className}>
@@ -183,41 +222,56 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
             onFinish={() => {
               handleTimeUp();
             }}
-            onTimeChange={(newTime) => setTime(newTime)} // Add this line to update the time state
+            onTimeChange={(newTime) => setTime(newTime)}
           />
         )}
       </div>
-
+  
       {isDrawing && (
-      <>
-        
-      <div className="color-picker">
-        {colors.map((c) => (
-          <div
-            key={c}
-            className="color-box"
-            style={{ backgroundColor: c }}
-            onClick={() => setColor(c)}
-          />
-        ))}
-        <div
-          className="color-box"
-          style={{ backgroundColor: "#FFFFFF", border: "1px solid black" }}
-          onClick={() => setColor("#FFFFFF")}
-        />
-      </div>
-      <button onClick={clearCanvas}>Clear</button>
-      </>
-    )}
+        <>
+          <div className="color-picker">
+            {colors.map((c) => (
+              <div
+                key={c}
+                className="color-box"
+                style={{ backgroundColor: c }}
+                onClick={() => setColor(c)}
+              />
+            ))}
+            <div
+              className="color-box"
+              style={{ backgroundColor: "#FFFFFF", border: "1px solid black" }}
+              onClick={() => setColor("#FFFFFF")}
+            />
+          </div>
+  
+          <div className="stroke-size-picker">
+  <label htmlFor="stroke-size">Stroke size: {strokeSize}</label>
+  <input
+    type="range"
+    id="stroke-size"
+    name="stroke-size"
+    min="1"
+    max="20"
+    value={strokeSize}
+    onChange={(e) => setStrokeSize(parseInt(e.target.value))}
+  />
+</div>
 
+  
+          <button onClick={clearCanvas}>Clear</button>
+        </>
+      )}
+  
       <canvas
-      ref={canvasRef}
-      className={cx("border border-black", "hidden md:block")}
-      width="800"
-      height="600"
-    ></canvas>
+        ref={canvasRef}
+        className={cx("border border-black", "hidden md:block")}
+        width="800"
+        height="600"
+      ></canvas>
     </div>
   );
+  
 };
 
 export default DrawingCanvas;
