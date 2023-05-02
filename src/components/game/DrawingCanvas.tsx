@@ -229,37 +229,48 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
   
       {isDrawing && (
         <>
-          <div className="color-picker">
-            {colors.map((c) => (
+          <div className="toolbar flex items-center justify-between">
+            <div className="color-picker flex items-center">
+              {colors.map((c) => (
+                <div
+                  key={c}
+                  className="color-box w-6 h-6 m-1 border border-black cursor-pointer"
+                  style={{ backgroundColor: c }}
+                  onClick={() => setColor(c)}
+                />
+              ))}
               <div
-                key={c}
-                className="color-box"
-                style={{ backgroundColor: c }}
-                onClick={() => setColor(c)}
+                className="color-box w-6 h-6 m-1 border border-black cursor-pointer"
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  border: "1px solid black",
+                }}
+                onClick={() => setColor("#FFFFFF")}
               />
-            ))}
-            <div
-              className="color-box"
-              style={{ backgroundColor: "#FFFFFF", border: "1px solid black" }}
-              onClick={() => setColor("#FFFFFF")}
-            />
+            </div>
+  
+            <div className="stroke-size-picker flex items-center">
+              <label htmlFor="stroke-size" className="mr-2">
+                Stroke size: {strokeSize}
+              </label>
+              <input
+                type="range"
+                id="stroke-size"
+                name="stroke-size"
+                min="1"
+                max="20"
+                value={strokeSize}
+                onChange={(e) =>
+                  setStrokeSize(parseInt(e.target.value))
+                }
+                className="w-32"
+              />
+            </div>
+  
+            <button onClick={clearCanvas} className="ml-4">
+              Clear
+            </button>
           </div>
-  
-          <div className="stroke-size-picker">
-  <label htmlFor="stroke-size">Stroke size: {strokeSize}</label>
-  <input
-    type="range"
-    id="stroke-size"
-    name="stroke-size"
-    min="1"
-    max="20"
-    value={strokeSize}
-    onChange={(e) => setStrokeSize(parseInt(e.target.value))}
-  />
-</div>
-
-  
-          <button onClick={clearCanvas}>Clear</button>
         </>
       )}
   

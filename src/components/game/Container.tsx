@@ -8,6 +8,7 @@ const Container: React.FC = () => {
     <>
       <TopBar />
       <div
+        className="mt-4" // Add this class
         style={{
           display: "flex",
           justifyContent: "center",
