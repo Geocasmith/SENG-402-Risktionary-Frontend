@@ -39,6 +39,9 @@ const voteSlice = createSlice({
     incrementKey: (state) => {
       state.key += 1;
     },
+    setKey: (state, action) => {
+      state.key = action.payload;
+    },
   },
 });
 
@@ -58,4 +61,4 @@ export type AppDispatch = typeof store.dispatch;
 export const selectVoteKey = (state: RootState) => state.vote.key;
 
 //export reducers
-export const { incrementKey } = voteSlice.actions;
+export const { incrementKey, setKey } = voteSlice.actions;

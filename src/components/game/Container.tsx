@@ -6,7 +6,6 @@ import TopBar from "../TopBar";
 const Container: React.FC = () => {
   return (
     <>
-      <TopBar />
       <div
         className="mt-4" // Add this class
         style={{

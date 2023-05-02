@@ -52,22 +52,25 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
       y: number;
       color: string;
       drawing: boolean;
+      strokeSize: number; // Add strokeSize here
     }) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-
+    
       const context = canvas.getContext("2d");
       if (!context) return;
-
+    
       if (event.drawing) {
         context.beginPath();
         context.moveTo(event.x, event.y);
       } else {
         context.strokeStyle = event.color;
+        context.lineWidth = event.strokeSize; 
         context.lineTo(event.x, event.y);
         context.stroke();
       }
     };
+    
 
     const handleClearEvent = () => {
       const canvas = canvasRef.current;
@@ -110,6 +113,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
           y,
           color,
           drawing: true,
+          strokeSize,
         });
       }
     };
@@ -130,6 +134,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
           y,
           color,
           drawing: false,
+          strokeSize,
         });
       }
     };

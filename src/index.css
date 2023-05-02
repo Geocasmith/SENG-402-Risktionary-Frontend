@@ -22,3 +22,12 @@ code {
     linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
   background-size: 10% 10%;
 }
+@media (max-width: 640px) {
+  .heatmap-container {
+    width: calc(100vw - 4rem);
+    height: calc(100vw - 4rem);
+  }
+  .left-axis {
+    left: -1rem;
+  }
+}

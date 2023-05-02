@@ -1,15 +1,17 @@
 // Lobby.tsx
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setGamePhase } from "./../../reducers/gameSlice";
 import socket from "./../../socket";
 import TopBar from "../TopBar";
 import { getUserScore } from "./../helper/ScoreHelper";
 import "./Lobby.css";
+import { selectVoteKey } from "../../store";
 
 const Lobby: React.FC = () => {
   const dispatch = useDispatch();
   const [playerList, setPlayerList] = useState<string[]>([]);
+  const currentVoteKey = useSelector(selectVoteKey);
   
   const displayName = localStorage.getItem("displayName") || "";
 
@@ -37,7 +39,7 @@ const Lobby: React.FC = () => {
   const handleStartButtonClick = () => {
     // Emit the "start game" event
     console.log("Start game button clicked");
-    socket.emit("start");
+    socket.emit("start", currentVoteKey);
   };
 
   const isDrawing = localStorage.getItem("isDrawing") === "true";

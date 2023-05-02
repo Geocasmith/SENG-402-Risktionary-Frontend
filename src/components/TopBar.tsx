@@ -9,22 +9,7 @@ const TopBar: React.FC = () => {
             <span className="text-yellow-300">Risk</span>tionary
           </h1>
           <div className="flex space-x-4">
-            <button
-              className="bg-yellow-300 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-500 focus:ring-yellow-300"
-              onClick={() => {
-                console.log("Profile button clicked");
-              }}
-            >
-              <i className="fas fa-smile text-blue-600"></i>
-            </button>
-            <button
-              className="bg-yellow-300 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-500 focus:ring-yellow-300"
-              onClick={() => {
-                console.log("Logout button clicked");
-              }}
-            >
-              <i className="fas fa-door-open text-blue-600"></i>
-            </button>
+            
           </div>
         </div>
       </div>

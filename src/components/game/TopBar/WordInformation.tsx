@@ -34,9 +34,9 @@ const WordInformation: React.FC<WordInformationProps> = ({
         word
           .split("")
           .map((char, index) =>
-            newRevealedIndices.has(index) || char === " " ? char : "_"
+            char === " " ? "\u00A0\u00A0" : newRevealedIndices.has(index) ? char : "_"
           )
-          .join(" ")
+          .join("\u00A0")
       );
     }
   }, [isDrawing, word, time, revealedIndices]);

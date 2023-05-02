@@ -65,7 +65,7 @@ const DisplayVotes: React.FC<DisplayVotesProps> = ({ votes }) => {
 
       <div className="relative mb-8">
         <div
-          className="absolute left-[-32px] text-center"
+          className="absolute left-[-32px] text-center left-axis"
           style={{
             top: "50%",
             transform: "translateY(-50%) translateX(-100%) rotate(180deg)",

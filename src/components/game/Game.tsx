@@ -7,7 +7,7 @@ import DisplayVotes from "./../Vote/DisplayVotes";
 import { selectGamePhase, setGamePhase } from "./../../reducers/gameSlice";
 import Container from "./Container";
 import Slides from "./Slides";
-import { incrementKey } from "./../../store";
+import { incrementKey, setKey, selectVoteKey } from "./../../store";
 import GameBorder from "../GameBorder";
 import { useNavigate } from "react-router-dom";
 
@@ -16,13 +16,20 @@ const Game: React.FC = () => {
   const dispatch = useDispatch();
   const [receivedVotes, setReceivedVotes] = useState<any[]>([]);
   const navigate = useNavigate();
+  const currentVoteKey = useSelector(selectVoteKey);
+
 
   useEffect(() => {
     if (!sessionStorage.getItem("signedIn")) {
       navigate("/signup");
     }
 
-    const handleStarted = () => {
+    const handleStarted = (voteKey: number) => {
+      console.log("Received started event with vote key:", voteKey);
+      if (currentVoteKey !== voteKey) {
+        console.log("Vote key is different, updating...");
+        dispatch(setKey(voteKey));
+      }
       dispatch(setGamePhase("game"));
     };
 

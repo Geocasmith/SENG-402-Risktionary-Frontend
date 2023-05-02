@@ -11,6 +11,7 @@ const Vote: React.FC = () => {
   const [drawing, setDrawing] = useState(5);
   const voteKey = useSelector(selectVoteKey);
   const voteName = GameWordAccessor.getGameWordNameByKey(voteKey);
+  const [hasVoted, setHasVoted] = useState(false);
 
   // useEffect(() => {
   //   const isDrawing = localStorage.getItem("isDrawer");
@@ -20,6 +21,7 @@ const Vote: React.FC = () => {
   // }, []);
 
   const handleSubmit = () => {
+    setHasVoted(true);
     const voteData = {
       risk,
       probability,
@@ -87,7 +89,7 @@ const Vote: React.FC = () => {
               className="w-full"
             />
           </div>
-          {/* <button
+          <button
             onClick={handleSubmit}
             className={`${
               hasVoted
@@ -97,13 +99,13 @@ const Vote: React.FC = () => {
             disabled={hasVoted}
           >
             Submit
-          </button> */}
-          <button
+          </button>
+          {/* <button
             onClick={handleSubmit}
             className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md w-full"
           >
             Submit
-          </button>
+          </button> */}
         </div>
       </div>
     </>
