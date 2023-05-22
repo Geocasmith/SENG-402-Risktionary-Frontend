@@ -8,6 +8,7 @@ import GameWordAccessor from "./../helper/GameWordAccessor";
 import "./../../App.css";
 import { getSocketConnectionConfig } from "./../../config";
 import cx from "classnames";
+import CountdownTimer from "../helper/CountdownTimer";
 
 
 interface DrawingCanvasProps {
@@ -218,18 +219,26 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
     "#FFA500", "#8A2BE2", "#5F9EA0", "#FFC0CB", "#808080",
   ];
 
+  const skipDrawing = () => {
+    if (socket) {
+      socket.emit("skip");
+    }
+  };
+  
+
   return (
     <div className={className}>
       <div className="word-information">
         <WordInformation isDrawing={isDrawing} word={word} time={time} />
-        {!timeUp && (
+        {/* {!timeUp && (
           <Timer
             onFinish={() => {
               handleTimeUp();
             }}
             onTimeChange={(newTime) => setTime(newTime)}
           />
-        )}
+        )} */}
+        <CountdownTimer seconds={90} onTimeOut={() => console.log("time out")} />
       </div>
   
       {isDrawing && (
@@ -272,8 +281,17 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
               />
             </div>
   
-            <button onClick={clearCanvas} className="ml-4">
+            <button
+              onClick={clearCanvas}
+              className="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
               Clear
+            </button>
+            <button
+              onClick={skipDrawing}
+              className="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Skip
             </button>
           </div>
         </>

@@ -4,6 +4,8 @@ import { selectVoteKey } from "../../store";
 import socket from "../../socket";
 import GameWordAccessor from "../helper/GameWordAccessor";
 import TopBar from "../TopBar";
+import CountdownTimer from './../helper/CountdownTimer';
+
 
 const Vote: React.FC = () => {
   const [risk, setRisk] = useState(5);
@@ -40,13 +42,16 @@ const Vote: React.FC = () => {
   };
   return (
     <>
-      <TopBar />
-      <div
-        className="flex flex-col items-center justify-center bg-gray-50"
-        style={{ height: "calc(100vh - 8rem)" }} // Change this line
-      >
-        <div className="container mx-auto px-4 space-y-8">
-          <h2 className="text-4xl font-bold my-4 text-center">{voteName}</h2>
+        <TopBar />
+        <div
+            className="flex flex-col items-center justify-center bg-gray-50 relative"
+            style={{ height: "calc(100vh - 8rem)" }}
+        >
+            <div className="absolute top-4 right-4">
+                <CountdownTimer seconds={30} onTimeOut={() => console.log("time out")} />
+            </div>
+            <div className="container mx-auto px-4 space-y-8">
+                <h2 className="text-4xl font-bold my-4 text-center">{voteName}</h2>
           <div className="my-4">
             <div className="flex justify-between">
               <span>Low Risk</span>
@@ -89,7 +94,7 @@ const Vote: React.FC = () => {
               className="w-full"
             />
           </div>
-          <button
+          {/* <button
             onClick={handleSubmit}
             className={`${
               hasVoted
@@ -99,13 +104,13 @@ const Vote: React.FC = () => {
             disabled={hasVoted}
           >
             Submit
-          </button>
-          {/* <button
+          </button> */}
+          <button
             onClick={handleSubmit}
             className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md w-full"
           >
             Submit
-          </button> */}
+          </button>
         </div>
       </div>
     </>
