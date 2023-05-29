@@ -80,14 +80,22 @@ const ChatBox: React.FC = () => {
       const points = 50 + remainingTime;
       updateUserScore(points);
 
-      fetch("/guess", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        //TODO: add in user data
-        body: JSON.stringify("put user data in here"),
-      });
+    const correctGuessMessage: Message = {
+    username: displayName,
+    message: `has guessed the word correctly! ${points} Points`,
+    isCorrectGuess: true,
+  };
+  
+  socket?.emit("correctGuess", correctGuessMessage, room);
+
+      // fetch("/guess", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   //TODO: add in user data
+      //   body: JSON.stringify("put user data in here"),
+      // });
 
       return;
     }
