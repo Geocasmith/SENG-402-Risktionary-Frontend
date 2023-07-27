@@ -120,7 +120,7 @@ const ChatBox: React.FC = () => {
     <div
       className="flex flex-col h-screen 520" // Add the h-screen class here
       style={{
-        maxHeight: "calc(100vh - 11.7em)", // Add this line to limit the max height
+        maxHeight: "calc(100vh - 3.5em)", // Add this line to limit the max height
       }}
     >
       <div

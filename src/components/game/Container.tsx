@@ -12,7 +12,8 @@ const Container: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "calc(100vh - 8em)",
+          // height: "calc(100vh - 8em)",
+          // height: 700
         }}
       >
         <DrawingCanvas className="hidden md:block" /> {/* Add hidden and md:block here */}

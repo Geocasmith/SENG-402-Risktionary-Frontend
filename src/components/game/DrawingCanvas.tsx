@@ -301,7 +301,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ className }) => {
         ref={canvasRef}
         className={cx("border border-black", "hidden md:block")}
         width="800"
-        height="600"
+        height="550"
       ></canvas>
     </div>
   );
