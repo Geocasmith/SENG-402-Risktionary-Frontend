@@ -94,7 +94,7 @@ const Vote: React.FC = () => {
               className="w-full"
             />
           </div>
-          {/* <button
+          <button
             onClick={handleSubmit}
             className={`${
               hasVoted
@@ -104,13 +104,13 @@ const Vote: React.FC = () => {
             disabled={hasVoted}
           >
             Submit
-          </button> */}
-          <button
+          </button>
+          {/* <button
             onClick={handleSubmit}
             className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md w-full"
           >
             Submit
-          </button>
+          </button> */}
         </div>
       </div>
     </>
