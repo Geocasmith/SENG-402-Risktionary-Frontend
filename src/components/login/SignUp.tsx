@@ -33,6 +33,7 @@ const SignUp: React.FC = () => {
     // }
     sessionStorage.setItem("signedIn", "true");
     localStorage.setItem("displayName", signUpData.displayName);
+    localStorage.setItem("studentId", signUpData.studentId);
     navigate("/");
   };
 

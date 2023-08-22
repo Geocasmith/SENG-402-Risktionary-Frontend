@@ -10,11 +10,13 @@ import Timer from "./TopBar/Timer";
 interface Message {
   username: string | null;
   message: string;
+  studentId: string;  
   isCorrectGuess?: boolean;
 }
 
 const ChatBox: React.FC = () => {
   const displayName = localStorage.getItem("displayName") || "User";
+  const studentId = localStorage.getItem("studentId") || "";
   const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
@@ -65,11 +67,17 @@ const ChatBox: React.FC = () => {
 
     const currentWord = GameWordAccessor.getGameWordNameByKey(voteKey) ?? "";
 
+    const baseMessageContent: Message = {
+      username: displayName,
+      message: message.trim(),
+      studentId: studentId  // include the studentId
+    };
+
     if (message.trim().toLowerCase() === currentWord.toLowerCase()) {
       setMessages((prevMessages) => [
         ...prevMessages,
         {
-          username: null,
+          ...baseMessageContent,  // spread the base content
           message: "You've guessed correctly",
           isCorrectGuess: true,
         },
@@ -80,34 +88,21 @@ const ChatBox: React.FC = () => {
       const points = 50 + remainingTime;
       updateUserScore(points);
 
-    const correctGuessMessage: Message = {
-    username: displayName,
-    message: `has guessed the word correctly! ${points} Points`,
-    isCorrectGuess: true,
-  };
-  
-  socket?.emit("correctGuess", correctGuessMessage, room);
-
-      // fetch("/guess", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   //TODO: add in user data
-      //   body: JSON.stringify("put user data in here"),
-      // });
+      const correctGuessMessage: Message = {
+        ...baseMessageContent,  // spread the base content
+        message: `has guessed the word correctly! ${points} Points`,
+        isCorrectGuess: true,
+      };
+      
+      socket?.emit("correctGuess", correctGuessMessage, room);
 
       return;
     }
 
-    const chatMessage: Message = {
-      username: displayName,
-      message: message.trim(),
-    };
-
-    socket?.emit("sendMessage", chatMessage, room);
+    socket?.emit("sendMessage", baseMessageContent, room); // use baseMessageContent directly
     setMessage("");
-  };
+};
+
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
