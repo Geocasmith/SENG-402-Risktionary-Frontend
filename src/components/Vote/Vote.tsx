@@ -14,6 +14,8 @@ const Vote: React.FC = () => {
   const voteKey = useSelector(selectVoteKey);
   const voteName = GameWordAccessor.getGameWordNameByKey(voteKey);
   const [hasVoted, setHasVoted] = useState(false);
+  const displayName = localStorage.getItem("displayName") || "";
+  const studentId = localStorage.getItem("studentId") || "";
 
   // useEffect(() => {
   //   const isDrawing = localStorage.getItem("isDrawer");
@@ -28,18 +30,12 @@ const Vote: React.FC = () => {
       risk,
       probability,
       drawing,
+      displayName, 
+      studentId 
     };
-
     socket.emit("submit", voteData);
+  }
 
-    fetch("/vote", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(voteData),
-    });
-  };
   return (
     <>
         <TopBar />
