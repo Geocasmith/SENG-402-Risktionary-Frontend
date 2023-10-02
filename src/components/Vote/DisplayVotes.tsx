@@ -35,7 +35,7 @@ const DisplayVotes: React.FC<DisplayVotesProps> = ({ votes }) => {
       const dataPoints = votes.map((vote) => {
         return {
           x: vote.risk * 35,
-          y: vote.probability * 35,
+          y: (11 - vote.probability) * 35,
           value: (1 / votes.length) * 150,
         };
       });
@@ -76,34 +76,34 @@ const DisplayVotes: React.FC<DisplayVotesProps> = ({ votes }) => {
           Probability
         </div>
         <div className="relative w-96 h-96 grid-pattern heatmap-container">
-          <div className="text-center absolute bottom-[-45px] w-full">Risk</div>
-          {Array.from({ length: 11 }, (_, i) => i).map((i) => (
-            <React.Fragment key={i}>
-              {i !== 0 && (
-                <>
-                  <div
-                    className="absolute left-[-30px] text-center"
-                    style={{
-                      top: `${(10 - i) * 10}%`,
-                      transform: "translateY(-50%)",
-                    }}
-                  >
-                    {i}
-                  </div>
-                  <div
-                    className="absolute bottom-[-30px] text-center"
-                    style={{
-                      left: `${i * 10}%`,
-                      transform: "translateX(-50%)",
-                    }}
-                  >
-                    {i}
-                  </div>
-                </>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+  <div className="text-center absolute bottom-[-45px] w-full">Risk</div>
+  {Array.from({ length: 6 }, (_, i) => i).map((i) => (
+    <React.Fragment key={i}>
+      {i !== 0 && (
+        <>
+          <div
+            className="absolute left-[-30px] text-center"
+            style={{
+              top: `${(5 - i) * 20 + 10}%`,  // Added 10% to center it in the segment
+              transform: "translateY(-50%)",
+            }}
+          >
+            {i}
+          </div>
+          <div
+            className="absolute bottom-[-30px] text-center"
+            style={{
+              left: `${i * 20 - 10}%`,  // Added 10% to center it in the segment
+              transform: "translateX(-50%)",
+            }}
+          >
+            {i}
+          </div>
+        </>
+      )}
+    </React.Fragment>
+  ))}
+</div>
       </div>
 
       {isDrawing && (
