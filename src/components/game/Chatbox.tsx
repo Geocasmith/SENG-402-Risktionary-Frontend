@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { selectVoteKey } from "./../../store";
 import { updateUserScore } from "./../helper/ScoreHelper";
 import { getSocketConnectionConfig } from "./../../config";
-import Timer from "./TopBar/Timer";
 
 interface Message {
   username: string | null;
@@ -54,13 +53,18 @@ const ChatBox: React.FC = () => {
     });
   }, [socket, room]);
 
-  const handleRoundFinish = () => {
-    setRoundFinished(true);
-  };
-
-  const handleTimeChange = (newTime: number) => {
-    setTime(newTime);
-  };
+  useEffect(() => {
+    // Dont run if round is finished or a word guessed
+    if (roundFinished || hasGuessedWord) {
+      return;
+    }
+    
+    const timerId = setInterval(() => {
+      setRemainingTime((prevTime) => prevTime - 1);
+    }, 1000);
+    
+    return () => clearInterval(timerId);
+  }, [roundFinished, hasGuessedWord]);
 
   const sendMessage = () => {
     if (message.trim() === "") return;
