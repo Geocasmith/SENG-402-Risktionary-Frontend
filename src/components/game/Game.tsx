@@ -21,39 +21,45 @@ const Game: React.FC = () => {
 
   useEffect(() => {
     if (!sessionStorage.getItem("signedIn")) {
-      navigate("/signup");
+        navigate("/signup");
     }
 
     const handleStarted = (voteKey: number) => {
-      console.log("Received started event with vote key:", voteKey);
-      if (currentVoteKey !== voteKey) {
-        console.log("Vote key is different, updating...");
-        dispatch(setKey(voteKey));
-      }
-      dispatch(setGamePhase("game"));
+        console.log("Received started event with vote key:", voteKey);
+        if (currentVoteKey !== voteKey) {
+            console.log("Vote key is different, updating...");
+            dispatch(setKey(voteKey));
+        }
+        dispatch(setGamePhase("game"));
     };
 
     const handleVote = () => {
-      console.log("Received vote event");
-      dispatch(setGamePhase("vote"));
+        console.log("Received vote event");
+        if (gamePhase !== 'lobby') {  
+            dispatch(setGamePhase("vote"));
+        }
     };
 
     const handleHeatmap = (votes: any[]) => {
-      console.log("Received displayvotes event");
-      setReceivedVotes(votes);
-      dispatch(setGamePhase("displayVotes"));
+        console.log("Received displayvotes event");
+        if (gamePhase !== 'lobby') {  
+            setReceivedVotes(votes);
+            dispatch(setGamePhase("displayVotes"));
+        }
     };
 
     const handleSlides = () => {
-      console.log("Received slides event");
-      dispatch(setGamePhase("slides"));
+        console.log("Received slides event");
+        if (gamePhase !== 'lobby') {  
+            dispatch(setGamePhase("slides"));
+        }
     };
 
     const handleRestart = () => {
-      console.log("Received restart event");
-      dispatch(incrementKey());
-      setReceivedVotes([]); // <-- Clear receivedVotes on restart
-      dispatch(setGamePhase("lobby"));
+        console.log("Received restart event");
+        dispatch(incrementKey());
+        setReceivedVotes([]);
+        dispatch(setGamePhase("lobby"));
     };
 
     socket.on("started", handleStarted);
@@ -64,13 +70,14 @@ const Game: React.FC = () => {
 
     // Cleanup on unmount
     return () => {
-      socket.off("started", handleStarted);
-      socket.off("vote", handleVote);
-      socket.off("heatmap", handleHeatmap);
-      socket.off("slides", handleSlides);
-      socket.off("restart", handleRestart);
+        socket.off("started", handleStarted);
+        socket.off("vote", handleVote);
+        socket.off("heatmap", handleHeatmap);
+        socket.off("slides", handleSlides);
+        socket.off("restart", handleRestart);
     };
-  }, [dispatch, navigate]);
+}, [dispatch, navigate, gamePhase, currentVoteKey]);
+
 
   return (
     <div>
