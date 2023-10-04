@@ -53,7 +53,7 @@ const SignUp: React.FC = () => {
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="student-id" className="sr-only">
-                Participant ID
+              Participant ID
               </label>
               <input
                 id="student-id"
