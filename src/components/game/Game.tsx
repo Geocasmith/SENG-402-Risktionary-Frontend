@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import socket from "./../../socket";
-import Lobby from "./Lobby";
+import Lobby from "./Lobby/Lobby";
 import Vote from "../Vote/Vote";
 import DisplayVotes from "./../Vote/DisplayVotes";
 import { selectGamePhase, setGamePhase } from "./../../reducers/gameSlice";
 import Container from "./Container";
-import Slides from "./Slides";
+import Slides from "./../slides/Slides";
+
 import { incrementKey, setKey, selectVoteKey } from "./../../store";
 import GameBorder from "../GameBorder";
 import { useNavigate } from "react-router-dom";
 
+// Manages the different states of the game using socket.io messages to initiate updates in game state and uses redux to store the game state
+//The file also contains an authentication check to ensure users are authenticated before playing the game
 const Game: React.FC = () => {
   const gamePhase = useSelector(selectGamePhase);
   const dispatch = useDispatch();
@@ -24,6 +27,7 @@ const Game: React.FC = () => {
         navigate("/signup");
     }
 
+    // Sockets for handling game state updates
     const handleStarted = (voteKey: number) => {
         console.log("Received started event with vote key:", voteKey);
         if (currentVoteKey !== voteKey) {
@@ -62,13 +66,13 @@ const Game: React.FC = () => {
         dispatch(setGamePhase("lobby"));
     };
 
+    // On each socket message recieved, update the game state and handle changes
     socket.on("started", handleStarted);
     socket.on("vote", handleVote);
     socket.on("heatmap", handleHeatmap);
     socket.on("slides", handleSlides);
     socket.on("restart", handleRestart);
 
-    // Cleanup on unmount
     return () => {
         socket.off("started", handleStarted);
         socket.off("vote", handleVote);

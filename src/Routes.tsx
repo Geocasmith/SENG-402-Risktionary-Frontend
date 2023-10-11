@@ -4,7 +4,8 @@ import App from "./App";
 import SignUp from "./components/login/SignUp";
 import Login from "./components/login/Login";
 import DisplayVotes from "./components/Vote/Heatmap";
-import Slides from "./components/game/Slides";
+import Slides from "./components/slides/Slides";
+
 import Heatmap from "./components/Vote/Heatmap";
 
 const AppRoutes: React.FC = () => {

@@ -18,7 +18,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
-import Lobby from "./components/game/Lobby";
+import Lobby from "./components/game/Lobby/Lobby";
 import Game from "./components/game/Game";
 import Vote from "./components/Vote/Vote";
 import DisplayVotes from "./components/Vote/DisplayVotes";

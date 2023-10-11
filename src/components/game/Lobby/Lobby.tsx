@@ -1,12 +1,12 @@
 // Lobby.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setGamePhase } from "./../../reducers/gameSlice";
-import socket from "./../../socket";
-import TopBar from "../TopBar";
-import { getUserScore } from "./../helper/ScoreHelper";
+import { setGamePhase } from "../../../reducers/gameSlice";
+import socket from "../../../socket";
+import TopBar from "../../TopBar";
+import { getUserScore } from "../../helper/ScoreHelper";
 import "./Lobby.css";
-import { selectVoteKey } from "../../store";
+import { selectVoteKey } from "../../../store";
 
 const Lobby: React.FC = () => {
   const dispatch = useDispatch();
