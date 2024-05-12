@@ -32,6 +32,12 @@ npm run build
 sudo systemctl restart nginx
 ```
 
+## Copy the player list
+To copy the player list from the VM, first log into the VM then paste this command.
+```
+cat 402-backend/backend/players.txt
+```
+
 
 ## Getting started
 
